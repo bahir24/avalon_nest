@@ -1,28 +1,35 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, Param} from '@nestjs/common';
+import {InjectModel} from '@nestjs/mongoose';
+import {User, UserDocument} from '../../shemas/user';
+import {Model} from 'mongoose';
 
 @Injectable()
 export class UsersService {
-    getAllUsers(id?: string): string {
-        return 'service User chuvak' + id;
+    constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
     }
-    
-    getUserById(id): string {
-        return 'service user id is ' + id;
+
+    async getAllUsers(): Promise<User[]> {
+        return this.userModel.find();
     }
-    
-    sendAll(): string {
-        return 'service post user';
+
+    async getUserById(id): Promise<User> {
+        return this.userModel.findById(id);
     }
-    
-    updateUser(): string {
-        return 'service update user';
+
+    async sendUser(data): Promise<User> {
+        const userData = new this.userModel(data);
+        return userData.save();
     }
-    
-    deleteAllUsers(): string {
-        return 'service delete all users';
+
+    async updateUsers(id: string, body): Promise<User> {
+        return this.userModel.findByIdAndUpdate(id, body);
     }
-    
-    deleteUserById(id: string): string {
-        return 'service user with id ' + id + ' deleted';
+
+    async deleteAllUsers(): Promise<User[]> {
+        return this.userModel.remove();
+    }
+
+    async deleteUserById(id: string): Promise<User> {
+        return this.userModel.findByIdAndRemove(id);
     }
 }

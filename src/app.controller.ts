@@ -1,26 +1,30 @@
 import {Controller, Delete, Get, Post, Put} from '@nestjs/common';
-import { AppService } from './app.service';
+import {AppService} from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-  @Get()
-  getHello(): string {
-    return 'Hi chuvak';
-  }
+    constructor(
+        private readonly appService: AppService
+    ) {
+    }
 
-  @Post()
-  sendAll(): string {
-    return 'post data';
-  }
+    @Get()
+    getHello(): string {
+        return 'Hi chuvak';
+    }
 
-  @Put()
-  update(): string {
-    return 'update data';
-  }
+    @Post()
+    sendAll(): string {
+        return 'post data';
+    }
 
-  @Delete()
-  delete(): string {
-    return 'delete data';
-  }
+    @Put()
+    update(): string {
+        return 'update data';
+    }
+
+    @Delete()
+    delete(): string {
+        return 'delete data';
+    }
 }

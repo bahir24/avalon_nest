@@ -1,37 +1,48 @@
-import {Controller, Get, Post, Put, Delete, Param, Query} from '@nestjs/common';
+import {User} from '../shemas/user';
 import {UsersService} from "../services/users/users.service";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+} from '@nestjs/common';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
-    constructor(private userService: UsersService) {}
-    
-    @Get()
-    getAllUsers(@Query("id") id: string): string {
-        return this.userService.getAllUsers(id);
+    constructor(private userService: UsersService) {
     }
 
-    @Get(":id")
-    getUserById(@Param('id') id: string): string {
+    @Get()
+    getAllUsers(): Promise<User[]> {
+        return this.userService.getAllUsers();
+    }
+
+    @Get(':id')
+    getUserById(id): Promise<User> {
         return this.userService.getUserById(id);
     }
-    
+
     @Post()
-    sendAll(): string {
-        return this.userService.sendAll();
+    sendUser(@Body() data): Promise<User> {
+        console.log(data);
+        return this.userService.sendUser(data);
     }
 
-    @Put()
-    updateUser(): string {
-        return this.userService.updateUser();
+    @Put(":id")
+    updateUsers(@Param('id') id, @Body() data): Promise<User> {
+        return this.userService.updateUsers(id, data);
     }
 
     @Delete()
-    deleteAllUsers(): string {
+    deleteAllUsers(): Promise<User[]> {
         return this.userService.deleteAllUsers();
     }
 
-    @Delete(":id")
-    deleteUserById(@Param('id') id): string {
+    @Delete(':id')
+    deleteUserById(@Param('id') id): Promise<User> {
         return this.userService.deleteUserById(id);
     }
 }
